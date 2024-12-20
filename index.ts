@@ -1,10 +1,13 @@
 // src/server.ts
 import express, { Request, Response, NextFunction } from 'express';
-import { config } from 'dotenv';
 import { medicineRoutes } from './src/routes/index';
 import { errorHandler } from './src/middlewares/errorHandler';
 import cors from 'cors'
 import bodyParser from 'body-parser';
+import { config } from 'dotenv';
+config()
+
+
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -21,7 +24,6 @@ app.use(cors());
 
 // Middleware
 app.use(bodyParser.json());
-config()
 
 // Register routes
 app.use("/api/medicines", medicineRoutes);

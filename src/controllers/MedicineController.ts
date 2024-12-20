@@ -29,7 +29,9 @@ export const getAllMedicinesController = async (req: Request, res: Response, nex
   try {
     // Get query parameters (page and limit)
     const page = parseInt(req.query.page as string, 10) || 1;
+    console.log("🚀 ~ getAllMedicinesController ~ page:", page)
     const limit = parseInt(req.query.limit as string, 10) || 10;
+    console.log("🚀 ~ getAllMedicinesController ~ limit:", limit)
 
     // Fetch medicines with pagination
     const medicines = await getAllMedicinesService(page, limit);

@@ -15,9 +15,9 @@ export const createMedicineService = async (medicineData: Medicine) => {
     }
 };
 
-export const getAllMedicinesService = async (page: number, limit: number) => {
+export const getAllMedicinesService = async (page: number, pageSize: number) => {
     try {
-        const { data, total } = await fetchAllMedicines(page, limit);
+        const { data, total } = await fetchAllMedicines(page, pageSize);
         return {
             data,
             total,

@@ -1,5 +1,4 @@
 import { Response } from 'express';
-// import { DefaultResponseInterface } from '../models/interfaces/DefaultResponseInterface';
 
 // Default Response For Every API
 export const DefaultResponse = (
