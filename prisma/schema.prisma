@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum DrugCategory {
+  Antibiotic
+  Painkiller
+  Vitamin
+  Antifungal
+  Antiviral
+}
+
+enum DosageForm {
+  Tablet
+  Capsule
+  Liquid
+  Ointment
+  Injection
+}
+
+enum PrescriptionReq {
+  YES
+  NO
+}
+
+enum ApprovalInfo {
+  FDA
+  EMA
+}
+
+model Medicine {
+  id                    String          @id @default(auto()) @map("_id") @db.ObjectId
+  medicineName          String
+  brandName             String
+  GenericName           String
+  drugCategory          DrugCategory
+  dosageForm            DosageForm
+  strength              String
+  manufacturer          String
+  packSize              String
+  price                 Float
+  routeOfAdministration String
+  TherapeuticClass      String
+  indications           String
+  sideEffects           String
+  contraindications     String
+  storageConditions     String
+  shelfLife             String
+  prescriptionReq       PrescriptionReq
+  approvalInfo          ApprovalInfo
+  barcodeSKU            String          @unique
+  batchNumber           String
+  interactions          String
+  countryOfOrigin       String
+  ndc                   String
+  distributor           String
+  specialConsiderations String
+  expiryDate            DateTime?
+  isDeleted             Boolean         @default(false)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+}
