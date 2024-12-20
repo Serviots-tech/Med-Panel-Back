@@ -6,7 +6,7 @@ import { log } from '../utils/logger';
 import { fetchMedicineById } from '../Repositories/MedicineRepository';
 import { CustomError } from '../utils/customError';
 
-// Controller function to add a new medicine changes
+// Controller function to add a new medicine 
 export const createMedicineController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
