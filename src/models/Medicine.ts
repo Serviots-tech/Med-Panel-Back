@@ -1,6 +1,5 @@
 import { Medicine, PrismaClient } from '@prisma/client';
 import { CustomError } from '../utils/customError';
-import { ObjectId } from 'mongodb';
 
 const prisma = new PrismaClient();
 
@@ -33,18 +32,15 @@ export const getAllMedicines = async (page = 1, limit = 10) => {
 
 // Get a single medicine by ID (non-deleted)
 export const getMedicineById = async (id: string) => {
-    // Check if the ID is a valid MongoDB ObjectId
-    if (!ObjectId.isValid(id)) {
-        throw new CustomError('The Medicine ID is invalid', 400);  // Bad Request if ID is invalid
-    }
+
 
     // Query the database
     const data = await prisma.medicine.findUnique({
-        where: { id: id },
+        where: { id: id,isDeleted:false },
     });
 
     // If no medicine found or if it's marked as deleted
-    if (!data || data.isDeleted) {
+    if (!data) {
         throw new CustomError('Medicine not found', 404);  // Not Found if medicine doesn't exist
     }
 
@@ -54,10 +50,6 @@ export const getMedicineById = async (id: string) => {
 // Update a medicine by ID
 export const updateMedicine = async (id: string, updateData: Medicine) => {
 
-    // Check if the ID is a valid MongoDB ObjectId
-    if (!ObjectId.isValid(id)) {
-        throw new CustomError('The Medicine ID is invalid', 400);
-    }
     const medicine = await prisma.medicine.update({
         where: { id },
         data: updateData,
@@ -73,10 +65,7 @@ export const updateMedicine = async (id: string, updateData: Medicine) => {
 // Delete a medicine by ID
 export const deleteMedicine = async (id: string) => {
 
-    // Check if the ID is a valid MongoDB ObjectId
-    if (!ObjectId.isValid(id)) {
-        throw new CustomError('The Medicine ID is Invalid', 400);
-    }
+ 
     const existingMedicine = await prisma.medicine.findUnique({
         where: { id },
     });

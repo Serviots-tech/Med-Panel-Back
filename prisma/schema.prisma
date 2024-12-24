@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -34,7 +34,7 @@ enum ApprovalInfo {
 }
 
 model Medicine {
-  id                    String          @id @default(auto()) @map("_id") @db.ObjectId
+  id                    String          @id @unique @default(uuid())
   medicineName          String
   brandName             String
   GenericName           String

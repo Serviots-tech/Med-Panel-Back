@@ -15,7 +15,6 @@ export const log = (message: string) => console.log(`[LOG]: ${message}`);
 // // Function for info level logging
 // export const logInfo = (message: string) => {
 //     const logMessage = `[INFO]: ${message}`;
-//     console.log(logMessage);
 //     writeToLogFile(logMessage);
 // };
 
