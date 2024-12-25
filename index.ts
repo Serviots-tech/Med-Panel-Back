@@ -1,6 +1,6 @@
 // src/server.ts
 import express, { Request, Response, NextFunction } from 'express';
-import { medicineRoutes } from './src/routes/index';
+import  routes  from './src/routes';
 import { errorHandler } from './src/middlewares/errorHandler';
 import cors from 'cors'
 import bodyParser from 'body-parser';
@@ -25,17 +25,9 @@ app.use(cors());
 // Middleware
 app.use(bodyParser.json());
 
-// Register routes
-app.use("/api/medicines", medicineRoutes);
 
-// Global error handler
-app.use(errorHandler);
+app.use(routes);
 
-
-// Route to test the server
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript with Node.js!');
-});
 
 // Start the server
 app.listen(port, () => {

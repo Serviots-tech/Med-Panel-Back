@@ -35,3 +35,19 @@ export const createMedicineValidator = [
   body('distributor').notEmpty().withMessage('Distributor is required'),
   body('specialConsiderations').notEmpty().withMessage('Special considerations are required'),
 ];
+
+export const createUserValidator = [
+  body('email')
+    .isEmail()
+    .withMessage('Valid email is required')
+    .normalizeEmail(),
+  body('password')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long'),
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required'),
+  body('role')
+    .isIn(['ADMIN', 'USER'])
+    .withMessage('Role must be "ADMIN" or "USER"')
+];
