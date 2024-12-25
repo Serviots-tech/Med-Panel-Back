@@ -14,9 +14,9 @@ export const loginController = async (req: Request, res: Response, next: NextFun
     
     const _email=email.toLowerCase()
     
-    const medicine = await loginService({email:_email,password:password});
+    const token = await loginService({email:_email,password:password});
 
-    DefaultResponse(res, 200, 'Medicines fetched successfully', medicine);
+    DefaultResponse(res, 200, 'user logged in successfully', token);
   } catch (error) {
     next(error);
   }

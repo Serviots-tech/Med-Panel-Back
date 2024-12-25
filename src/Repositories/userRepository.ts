@@ -16,7 +16,7 @@ export const ValidateUserByEmail = async (email: string) => {
     throw new CustomError('User not found', 404)
   }
 
-  if (!user.isDeleted) {
+  if (user.isDeleted) {
     throw new CustomError('User not Active', 403)
   }
 

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import { configData } from '../config/config';
 
-const accessTokenSecretKey = process.env.ACCESS_TOKEN_SECRET_KEY;
+const accessTokenSecretKey = configData.accessTokenSecretKey;
 
 // Generate AccessToken
 export const generateAccessToken = (payload: any) => {
