@@ -1,6 +1,6 @@
 import express from 'express';
 import { createMedicineController, deleteMedicineController, getAllMedicinesController, getMedicineByIdController, updateMedicineController } from '../controllers/medicineController';
-import { createMedicineValidator } from '../validators/medicineValidator';
+import { createMedicineValidator } from '../middlewares/validators/medicineValidator';
 
 const router = express.Router();
 

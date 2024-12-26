@@ -1,7 +1,7 @@
 import express from 'express';
 import { createAdminUserController, createUserController } from '../controllers/userController';
 import { isAuthenticated } from '../middlewares/authMiddleware';
-import {  createAdminUserValidator, createUserValidator } from '../validators/medicineValidator';
+import {  createAdminUserValidator, createUserValidator } from '../middlewares/validators/medicineValidator';
 
 const router = express.Router();
 

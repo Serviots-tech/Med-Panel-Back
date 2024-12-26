@@ -64,3 +64,9 @@ export const createAdminUserValidator = [
     .notEmpty()
     .withMessage('Name is required')
 ];
+
+export const loginValidationRules = [
+	body('email').notEmpty().withMessage('Email is required'),
+	body('email').isEmail().withMessage('Invalid email address'),
+	body('password').notEmpty().withMessage('Password is required'),
+];
