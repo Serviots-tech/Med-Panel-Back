@@ -5,17 +5,32 @@ import { DefaultResponse } from '../utils/DefaultResponse';
 import { log } from '../utils/logger';
 import { fetchMedicineById } from '../Repositories/MedicineRepository';
 import { CustomError } from '../utils/customError';
+import {
+  GetObjectCommand,
+  ObjectCannedACL,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { configData } from '../config/config';
+import { addImageInS3, s3Client } from '../helpers/s3';
+
 
 // Controller function to add a new medicine 
 export const createMedicineController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const errors = validationResult(req); 
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
     DefaultResponse(res, 400, 'Validation failed', errors.array())
   }
+
+  if (req?.file) {
+   const asas =  await addImageInS3(req?.file)
+   console.log("🚀 ~ createMedicineController ~ asas:", asas)
+  }
+
   try {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
-    const medicine = await createMedicineService({...req.body,price:parseFloat(req?.body?.price)},(req?.file as any).location);
+    const medicine = await createMedicineService({ ...req.body, price: parseFloat(req?.body?.price) }, (req?.file?.originalname as any));
     log(`Medicine created successfully: ${medicine.medicineName}`);
     DefaultResponse(res, 200, 'Medicines fetched successfully', medicine);
   } catch (error) {

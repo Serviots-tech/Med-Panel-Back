@@ -1,12 +1,16 @@
 import express from 'express';
-import { createMedicineController, deleteMedicineController, getAllMedicinesController, getMedicineByIdController, updateMedicineController } from '../controllers/MedicineController';
+import { createMedicineController, deleteMedicineController, getAllMedicinesController, getMedicineByIdController, updateMedicineController } from '../controllers/medicineController';
 import { createMedicineValidator } from '../middlewares/validators/medicineValidator';
 import { uploadDocumentMiddleware } from '../helpers/multer';
+import multer from 'multer';
+
+const storage = multer.memoryStorage()
+const upload = multer({storage:storage})
 
 const router = express.Router();
 
 // Route to create medicines
-router.post('/add',uploadDocumentMiddleware.single('file'), createMedicineController);
+router.post('/add',upload.single('file'), createMedicineController);
 
 
 // Route to get all medicines

@@ -8,8 +8,8 @@ export const createMedicineService = async (medicineData: Medicine, fileLocation
         log(`Attempting to create a new medicine: ${medicineData.medicineName}`);
         const fileName = fileLocation?.split('/').pop()!.slice(1);
 
-        const updatedMedicineData = fileName
-            ? { ...medicineData, image: fileName }
+        const updatedMedicineData = fileLocation
+            ? { ...medicineData, image: fileLocation }
             : { ...medicineData };
         const newMedicine = await addMedicine(updatedMedicineData);
         log(`Medicine created successfully: ${newMedicine.medicineName}`);

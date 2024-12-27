@@ -4,6 +4,7 @@ import { CustomError } from '../utils/customError';
 const prisma = new PrismaClient();
 
 export const createMedicine = async (medicineData: Medicine) => {
+    console.log("🚀 ~ createMedicine ~ medicineData:", medicineData)
     return await prisma.medicine.create({
         data: medicineData,
     });

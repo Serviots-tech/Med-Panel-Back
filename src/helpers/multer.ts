@@ -1,6 +1,8 @@
 import multer from 'multer';
 import { s3Storage } from './s3';
 const MAX_SIZE = 1 * 1024 * 1024;
+
+
 export const uploadDocumentMiddleware = multer({ storage: s3Storage,  limits: { fileSize: MAX_SIZE },
   fileFilter: (req: any, file: any, cb: any) => {
     if(!file){
