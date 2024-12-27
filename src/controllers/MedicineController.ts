@@ -8,14 +8,14 @@ import { CustomError } from '../utils/customError';
 
 // Controller function to add a new medicine 
 export const createMedicineController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const errors = validationResult(req);
+  const errors = validationResult(req); 
   if (!errors.isEmpty()) {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
     DefaultResponse(res, 400, 'Validation failed', errors.array())
   }
   try {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
-    const medicine = await createMedicineService(req.body);
+    const medicine = await createMedicineService({...req.body,price:parseFloat(req?.body?.price)},(req?.file as any).location);
     log(`Medicine created successfully: ${medicine.medicineName}`);
     DefaultResponse(res, 200, 'Medicines fetched successfully', medicine);
   } catch (error) {

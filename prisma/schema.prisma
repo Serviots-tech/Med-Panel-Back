@@ -32,6 +32,7 @@ enum ApprovalInfo {
   FDA
   EMA
 }
+
 enum Role {
   ADMIN
   USER
@@ -42,9 +43,9 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role     Role
-  isDeleted  Boolean  @default(false)
-  token   String?
+  role      Role
+  isDeleted Boolean  @default(false)
+  token     String?
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
@@ -74,6 +75,7 @@ model Medicine {
   interactions          String
   countryOfOrigin       String
   ndc                   String
+  image                 String?
   distributor           String
   specialConsiderations String
   expiryDate            DateTime?
