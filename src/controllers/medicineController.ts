@@ -1,18 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import { addImageInS3 } from '../helpers/s3';
+import { fetchMedicineById } from '../Repositories/MedicineRepository';
 import { createMedicineService, deleteMedicineService, getAllMedicinesService, getMedicineByIdService, updateMedicineByIdService } from '../services/MedicineService';
+import { CustomError } from '../utils/customError';
 import { DefaultResponse } from '../utils/DefaultResponse';
 import { log } from '../utils/logger';
-import { fetchMedicineById } from '../Repositories/MedicineRepository';
-import { CustomError } from '../utils/customError';
-import {
-  GetObjectCommand,
-  ObjectCannedACL,
-  PutObjectCommand,
-  S3Client,
-} from '@aws-sdk/client-s3';
-import { configData } from '../config/config';
-import { addImageInS3, s3Client } from '../helpers/s3';
 
 
 // Controller function to add a new medicine 
@@ -24,8 +17,7 @@ export const createMedicineController = async (req: Request, res: Response, next
   }
 
   if (req?.file) {
-   const asas =  await addImageInS3(req?.file)
-   console.log("🚀 ~ createMedicineController ~ asas:", asas)
+    await addImageInS3(req?.file)
   }
 
   try {
