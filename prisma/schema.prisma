@@ -75,11 +75,13 @@ model Medicine {
   interactions          String
   countryOfOrigin       String
   ndc                   String
-  image                 String?
+  image                 String[]
   distributor           String
   specialConsiderations String
   expiryDate            DateTime?
-  isDeleted             Boolean         @default(false)
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
+  scheduleType          String?
+  gstPercentage         Int
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

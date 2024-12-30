@@ -7,3 +7,20 @@ export function invalidText(value: any) {
 		value === 'null'
 	);
 }
+
+export function convertToBoolean(value:any) {
+    if (typeof value === "string") {
+        value = value.trim().toLowerCase();
+    }
+
+    const truthyValues = ["true", "1", "yes"];
+    const falsyValues = ["false", "0", "no"];
+
+    if (truthyValues.includes(value)) {
+        return true;
+    } else if (falsyValues.includes(value)) {
+        return false;
+    }
+
+    return false
+}

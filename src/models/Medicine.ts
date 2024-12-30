@@ -51,9 +51,11 @@ export const getMedicineById = async (id: string) => {
 // Update a medicine by ID
 export const updateMedicine = async (id: string, updateData: Medicine) => {
 
+    const {expiryDate,...restData} =  updateData
+
     const medicine = await prisma.medicine.update({
         where: { id },
-        data: updateData,
+        data: restData,
     });
 
     if (!medicine) {

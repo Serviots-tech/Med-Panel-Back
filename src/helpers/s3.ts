@@ -52,15 +52,31 @@ export const s3Storage = multerS3({
 });
 
 
-export const addImageInS3 = async (fileData: any) => {
-	const params = {
+// export const addImageInS3 = async (fileData: any) => {
+// 	const params = {
+// 		Bucket: configData.s3bucketName,
+// 		Key: fileData.originalname,
+// 		Body: fileData.buffer,
+// 		ContentType: fileData.mimetype,
+// 		ACL: ObjectCannedACL.public_read_write,
+// 	}
+// 	const command = new PutObjectCommand(params)
+// 	await s3Client.send(command)
+// }
+
+export const addImageInS3 = async (filesData: any[]) => {
+	const uploadPromises = filesData.map((fileData) => {
+	  const params = {
 		Bucket: configData.s3bucketName,
-		Key: fileData.originalname,
+		Key: `Medicines/${fileData.originalname?.split(' ')?.join('-')}`,
 		Body: fileData.buffer,
 		ContentType: fileData.mimetype,
 		ACL: ObjectCannedACL.public_read_write,
-	}
-	const command = new PutObjectCommand(params)
-	await s3Client.send(command)
-}
-
+	  };
+	  const command = new PutObjectCommand(params);
+	  return s3Client.send(command);
+	});
+  
+	// Wait for all uploads to complete
+	await Promise.all(uploadPromises);
+  };
