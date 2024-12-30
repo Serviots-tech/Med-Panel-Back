@@ -70,3 +70,9 @@ export const loginValidationRules = [
 	body('email').isEmail().withMessage('Invalid email address'),
 	body('password').notEmpty().withMessage('Password is required'),
 ];
+
+export const createDoseFormValidator = [
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required'),
+];
