@@ -50,6 +50,9 @@ export const getAllDoseForm = async (page: number, limit: number) => {
 
 
   const doseForm = await prisma.doseForms.findMany({
+    where:{
+      isDeleted:false
+    },
     skip,
     take: limit,
   })

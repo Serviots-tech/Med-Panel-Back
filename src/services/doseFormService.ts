@@ -33,7 +33,7 @@ export const updateDoseFormService = async (data: { id:string,name:string,create
 
     const isDoseFormExist= await validateDoseFormById(data?.id)
 
-    if(isDoseFormExist){
+    if(!isDoseFormExist){
         throw new CustomError("No dose form found",404)
     }
 
