@@ -15,13 +15,13 @@ enum DrugCategory {
   Antiviral
 }
 
-enum DosageForm {
-  Tablet
-  Capsule
-  Liquid
-  Ointment
-  Injection
-}
+// enum DosageForm {
+//   Tablet
+//   Capsule
+//   Liquid
+//   Ointment
+//   Injection
+// }
 
 enum PrescriptionReq {
   YES
@@ -46,17 +46,32 @@ model User {
   role      Role
   isDeleted Boolean  @default(false)
   token     String?
+  // Medicine Medicine[]
+  // DoseForms DoseForms[]
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+}
+
+model DoseForms {
+  id        String     @id @unique @default(uuid())
+  name      String
+  createdBy String?
+  isDeleted Boolean    @default(false)
+  // creator     User     @relation(fields: [createdBy], references: [id])
+  Medicine  Medicine[]
+  updatedAt DateTime   @updatedAt
+  createdAt DateTime   @default(now())
 }
 
 model Medicine {
   id                    String          @id @unique @default(uuid())
   medicineName          String
   brandName             String
-  GenericName           String
+  productType           String
   drugCategory          DrugCategory
-  dosageForm            DosageForm
+  // dosageForm            DosageForm
+  doseFormId            String
+  doseForm              DoseForms       @relation(fields: [doseFormId], references: [id])
   strength              String
   manufacturer          String
   packSize              String
@@ -75,11 +90,15 @@ model Medicine {
   interactions          String
   countryOfOrigin       String
   ndc                   String
-  image                 String?
+  image                 String[]
   distributor           String
   specialConsiderations String
   expiryDate            DateTime?
+  scheduleType          String?
+  gstPercentage         Int
   isDeleted             Boolean         @default(false)
   createdAt             DateTime        @default(now())
   updatedAt             DateTime        @updatedAt
+  createdBy             String?
+  // creator     User     @relation(fields: [createdBy], references: [id])
 }

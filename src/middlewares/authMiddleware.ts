@@ -9,7 +9,7 @@ export const isAuthenticated = async (
 	req: RequestExtended,
 	res: Response,
 	next: NextFunction
-) => {
+): Promise<void> => {
 	try {
 		const authHeader = req.headers.authorization || req.headers.Authorization;
 
@@ -35,36 +35,28 @@ export const isAuthenticated = async (
 		};
 
 		next();
-	} catch (err) {
-		// const error: any = err;
-		// if (error.errorDescription) {
-		// 	error.errorDescription = error.errorDescription.trim();
-		// }
-		// if (error.message === 'invalid token') {
-		// 	error.status = 401;
-		// 	error.message = 'Invalid token format. Please provide a valid JWT.';
-		// }
-		// if (error.message === 'jwt malformed') {
-		// 	error.status = 401;
-		// 	error.message = 'Invalid token format. Please provide a valid JWT.';
-		// }
-		// if (error.name === 'JsonWebTokenError') {
-		// 	error.status = 401;
-		// 	error.message = 'Invalid token format. Please provide a valid JWT';
-		// }
-		// if (error.name === 'TokenExpiredError') {
-		// 	error.status = 401;
-		// 	error.message = 'This token has been expired.';
-		// 	// error.message = 'Your session has been timed out, please login again.';
-		// }
-		// if (invalidText(error.status)) {
-		// 	error.status = 500;
-		// }
-		// return res.status(error.status).json({
-		// 	error: error.status == 500 ? { description: error.message } : error,
-		// 	message: error.status == 500 ? 'Something went wrong' : error.message,
-		// 	responseStatus: error.status,
-		// });
-		next(err)
+	} catch (err:any) {
+		if (err instanceof CustomError) {
+			res.status(err.statusCode || 500).json({
+			  error: { description: err.message },
+			  message: err.message,
+			  responseStatus: err.statusCode || 500,
+			});
+		  } else if (err.name === 'JsonWebTokenError') {
+			res.status(401).json({
+			  error: { description: 'Invalid token format. Please provide a valid JWT.' },
+			  message: 'Invalid token format. Please provide a valid JWT.',
+			  responseStatus: 401,
+			});
+		  } else if (err.name === 'TokenExpiredError') {
+			res.status(401).json({
+			  error: { description: 'This token has expired.' },
+			  message: 'This token has expired.',
+			  responseStatus: 401,
+			});
+		  } else {
+			// Pass unhandled errors to the global error handler
+			next(err);
+		  }
 	}
 };
