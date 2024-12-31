@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 export const createMedicineValidator = [
   body('medicineName').notEmpty().withMessage('Medicine name is required'),
   body('brandName').notEmpty().withMessage('Brand name is required'),
-  body('GenericName').notEmpty().withMessage('Generic name is required'),
+  body('productType').notEmpty().withMessage('Product type  is required'),
   body('drugCategory')
     .isIn(['Antibiotic', 'Painkiller', 'Vitamin', 'Antifungal', 'Antiviral'])
     .withMessage('Invalid drug category'),

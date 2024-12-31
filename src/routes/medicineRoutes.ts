@@ -10,7 +10,7 @@ const upload = multer({storage:storage})
 const router = express.Router();
 
 // Route to create medicines
-router.post('/add',upload.array('files'), createMedicineController);
+router.post('/add',createMedicineValidator,upload.array('files'), createMedicineController);
 
 
 // Route to get all medicines

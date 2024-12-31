@@ -67,7 +67,7 @@ model Medicine {
   id                    String          @id @unique @default(uuid())
   medicineName          String
   brandName             String
-  GenericName           String
+  productType           String
   drugCategory          DrugCategory
   // dosageForm            DosageForm
   doseFormId            String
