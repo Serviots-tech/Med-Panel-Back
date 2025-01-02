@@ -4,6 +4,7 @@ import { CustomError } from '../utils/customError';
 const prisma = new PrismaClient();
 
 export const createMedicine = async (medicineData: Medicine) => {
+    console.log("🚀 ~ createMedicine ~ medicineData:", medicineData)
     return await prisma.medicine.create({
         data: medicineData,
     });
@@ -50,9 +51,11 @@ export const getMedicineById = async (id: string) => {
 // Update a medicine by ID
 export const updateMedicine = async (id: string, updateData: Medicine) => {
 
+    const {expiryDate,...restData} =  updateData
+
     const medicine = await prisma.medicine.update({
         where: { id },
-        data: updateData,
+        data: restData,
     });
 
     if (!medicine) {

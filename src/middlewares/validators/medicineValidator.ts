@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 export const createMedicineValidator = [
   body('medicineName').notEmpty().withMessage('Medicine name is required'),
   body('brandName').notEmpty().withMessage('Brand name is required'),
-  body('GenericName').notEmpty().withMessage('Generic name is required'),
+  body('productType').notEmpty().withMessage('Product type  is required'),
   body('drugCategory')
     .isIn(['Antibiotic', 'Painkiller', 'Vitamin', 'Antifungal', 'Antiviral'])
     .withMessage('Invalid drug category'),
@@ -34,4 +34,45 @@ export const createMedicineValidator = [
   body('ndc').notEmpty().withMessage('NDC is required'),
   body('distributor').notEmpty().withMessage('Distributor is required'),
   body('specialConsiderations').notEmpty().withMessage('Special considerations are required'),
+];
+
+export const createUserValidator = [
+  body('email')
+    .isEmail()
+    .withMessage('Valid email is required')
+    .normalizeEmail(),
+  body('password')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long'),
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required'),
+  body('role')
+    .isIn(['ADMIN', 'USER'])
+    .withMessage('Role must be "ADMIN" or "USER"')
+];
+
+export const createAdminUserValidator = [
+  body('email')
+    .isEmail()
+    .withMessage('Valid email is required')
+    .normalizeEmail(),
+  body('password')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long'),
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required')
+];
+
+export const loginValidationRules = [
+	body('email').notEmpty().withMessage('Email is required'),
+	body('email').isEmail().withMessage('Invalid email address'),
+	body('password').notEmpty().withMessage('Password is required'),
+];
+
+export const createDoseFormValidator = [
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required'),
 ];

@@ -3,10 +3,15 @@ import { addMedicine, deleteMedicineByid, fetchAllMedicines, fetchMedicineById, 
 import { CustomError } from '../utils/customError';
 import { log } from '../utils/logger';
 
-export const createMedicineService = async (medicineData: Medicine) => {
+export const createMedicineService = async (medicineData: Medicine, fileLocation?: any) => {
     try {
         log(`Attempting to create a new medicine: ${medicineData.medicineName}`);
-        const newMedicine = await addMedicine(medicineData);
+        // const fileName = fileLocation?.split('/').pop()!.slice(1);
+
+        const updatedMedicineData = fileLocation
+            ? { ...medicineData, image: fileLocation }
+            : { ...medicineData };
+        const newMedicine = await addMedicine(updatedMedicineData);
         log(`Medicine created successfully: ${newMedicine.medicineName}`);
         return newMedicine;
     } catch (error) {

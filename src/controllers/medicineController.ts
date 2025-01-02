@@ -1,10 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import { addImageInS3 } from '../helpers/s3';
+import { fetchMedicineById } from '../Repositories/MedicineRepository';
 import { createMedicineService, deleteMedicineService, getAllMedicinesService, getMedicineByIdService, updateMedicineByIdService } from '../services/MedicineService';
+import { CustomError } from '../utils/customError';
 import { DefaultResponse } from '../utils/DefaultResponse';
 import { log } from '../utils/logger';
-import { fetchMedicineById } from '../Repositories/MedicineRepository';
-import { CustomError } from '../utils/customError';
+import { convertToBoolean } from '../utils/utils';
+
 
 // Controller function to add a new medicine 
 export const createMedicineController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -13,15 +16,25 @@ export const createMedicineController = async (req: Request, res: Response, next
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
     DefaultResponse(res, 400, 'Validation failed', errors.array())
   }
+
+  let originalNames;
+  if (req?.files) {
+    await addImageInS3(req?.files as any)
+     originalNames = (req.files as Array<{ originalname: string }>).map((file) =>
+      file.originalname?.split(' ')?.join('-')
+    );
+  }
+
   try {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
-    const medicine = await createMedicineService(req.body);
+    const medicine = await createMedicineService({ ...req.body, price: parseFloat(req?.body?.price),gstPercentage: parseInt(req?.body?.gstPercentage) }, (originalNames as any));
     log(`Medicine created successfully: ${medicine.medicineName}`);
     DefaultResponse(res, 200, 'Medicines fetched successfully', medicine);
   } catch (error) {
     log(`Error in creating medicine: ${error}`);
     next(error);
   }
+
 }
 
 // Controller function to fetch all medicines
@@ -83,6 +96,10 @@ export const updateMedicineController = async (req: Request, res: Response, next
     DefaultResponse(res, 400, 'Validation failed', errors.array());
   }
 
+  
+ 
+
+
   try {
     log(`Attempting to update medicine with ID: ${id}`);
     const existingMedicine = await fetchMedicineById(id);
@@ -91,9 +108,16 @@ export const updateMedicineController = async (req: Request, res: Response, next
       log(`Medicine with ID: ${id} not found`);
       throw new CustomError('Medicine not found', 404);
     }
+    let originalNames;
+    if (req?.files) {
+      await addImageInS3(req?.files as any)
+       originalNames = (req.files as Array<{ originalname: string }>).map((file) =>
+        file.originalname?.split(' ')?.join('-')
+      );
+    }
 
     // Proceed with updating the medicine
-    const updatedMedicine = await updateMedicineByIdService(id, updateData);
+    const updatedMedicine = await updateMedicineByIdService(id, {...updateData,price: parseFloat(req?.body?.price) , gstPercentage: parseInt(updateData?.gstPercentage),image:req?.files?.length ? originalNames : updateData?.image?.split(","),isDeleted:convertToBoolean(updateData?.isDeleted)});
     log(`Medicine updated successfully with ID: ${id}`);
     DefaultResponse(res, 200, 'Medicine updated successfully', updatedMedicine);
   } catch (error) {
