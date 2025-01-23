@@ -75,7 +75,7 @@ model Medicine {
   routeOfAdministration String?
   sideEffects           String?
   prescriptionReq       PrescriptionReq
-  barcodeSKU            String?         @unique
+  barcodeSKU            String?         
   ndc                   String?
   image                 String[]
   expiryDate            DateTime?
