@@ -7,7 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum DrugCategory {
+enum PackSize {
+  BOTTLE
+  STRIP
+  JAR
+  TUBE
+  PACKET
+  BOX
+  SACHET
+  VIAL
+  KIT
+  BAG
+}
+
+enum ScheduleType {
   H
   H1
   G
@@ -16,22 +29,9 @@ enum DrugCategory {
   NON_SCHEDULE
 }
 
-// enum DosageForm {
-//   Tablet
-//   Capsule
-//   Liquid
-//   Ointment
-//   Injection
-// }
-
 enum PrescriptionReq {
   YES
   NO
-}
-
-enum ApprovalInfo {
-  FDA
-  EMA
 }
 
 enum Role {
@@ -47,8 +47,6 @@ model User {
   role      Role
   isDeleted Boolean  @default(false)
   token     String?
-  // Medicine Medicine[]
-  // DoseForms DoseForms[]
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
@@ -58,7 +56,6 @@ model DoseForms {
   name      String
   createdBy String?
   isDeleted Boolean    @default(false)
-  // creator     User     @relation(fields: [createdBy], references: [id])
   Medicine  Medicine[]
   updatedAt DateTime   @updatedAt
   createdAt DateTime   @default(now())
@@ -69,33 +66,20 @@ model Medicine {
   medicineName          String
   brandName             String
   productType           String
-  drugCategory          DrugCategory
-  // dosageForm            DosageForm
   doseFormId            String
-  doseForm              DoseForms       @relation(fields: [doseFormId], references: [id])
-  strength              String
+  doseForm              DoseForms       @relation(fields: [doseFormId], references: [id]) //product category
+  weightage             String
   manufacturer          String
-  packSize              String
+  packSize              PackSize
   price                 Float
-  routeOfAdministration String
-  TherapeuticClass      String
-  indications           String
-  sideEffects           String
-  contraindications     String
-  storageConditions     String
-  shelfLife             String
+  routeOfAdministration String?
+  sideEffects           String?
   prescriptionReq       PrescriptionReq
-  approvalInfo          ApprovalInfo
-  barcodeSKU            String          @unique
-  batchNumber           String
-  interactions          String
-  countryOfOrigin       String
-  ndc                   String
+  barcodeSKU            String?         @unique
+  ndc                   String?
   image                 String[]
-  distributor           String
-  specialConsiderations String
   expiryDate            DateTime?
-  scheduleType          String?
+  scheduleType          ScheduleType
   gstPercentage         Int
   isDeleted             Boolean         @default(false)
   createdAt             DateTime        @default(now())
