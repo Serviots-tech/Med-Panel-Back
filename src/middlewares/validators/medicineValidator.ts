@@ -10,6 +10,9 @@ export const createMedicineValidator = [
   body('dosageForm')
     .isIn(['Tablet', 'Capsule', 'Liquid', 'Ointment', 'Injection'])
     .withMessage('Invalid dosage form'),
+  body('unitType')
+    .isIn(['gm', 'ml', 'kit', 'piece', 'Tablet', 'Capsule', 'ltr', 'MDI'])
+    .withMessage('Invalid Unit Type'),
   body('strength').notEmpty().withMessage('Strength is required'),
   body('manufacturer').notEmpty().withMessage('Manufacturer is required'),
   body('packSize').notEmpty().withMessage('Pack size is required'),
@@ -66,9 +69,9 @@ export const createAdminUserValidator = [
 ];
 
 export const loginValidationRules = [
-	body('email').notEmpty().withMessage('Email is required'),
-	body('email').isEmail().withMessage('Invalid email address'),
-	body('password').notEmpty().withMessage('Password is required'),
+  body('email').notEmpty().withMessage('Email is required'),
+  body('email').isEmail().withMessage('Invalid email address'),
+  body('password').notEmpty().withMessage('Password is required'),
 ];
 
 export const createDoseFormValidator = [

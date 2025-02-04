@@ -12,7 +12,6 @@ const router = express.Router();
 // Route to create medicines
 router.post('/add',upload.array('files'), createMedicineController);
 
-
 // Route to get all medicines
 router.get('/get-all', getAllMedicinesController);
 

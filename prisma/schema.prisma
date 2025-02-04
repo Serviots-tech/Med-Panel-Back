@@ -29,6 +29,18 @@ enum ScheduleType {
   NON_SCHEDULE
 }
 
+enum UnitType {
+  Gm
+  ml
+  kit
+  kg
+  piece
+  Tablet
+  Capsule
+  ltr
+  mdi
+}
+
 enum PrescriptionReq {
   YES
   NO
@@ -71,11 +83,12 @@ model Medicine {
   weightage             String
   manufacturer          String
   packSize              PackSize
+  unitType              UnitType
   price                 Float
   routeOfAdministration String?
   sideEffects           String?
   prescriptionReq       PrescriptionReq
-  barcodeSKU            String?         
+  barcodeSKU            String?
   ndc                   String?
   image                 String[]
   expiryDate            DateTime?
