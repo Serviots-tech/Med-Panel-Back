@@ -30,14 +30,14 @@ enum ScheduleType {
 }
 
 enum UnitType {
-  gm
-  ml
-  kit
-  kg
-  piece
-  Tablet
-  Capsule
-  ltr
+  GM
+  ML
+  KIT
+  KG
+  PIECE
+  TABLET
+  CAPSULE
+  LTR
   MDI
 }
 
