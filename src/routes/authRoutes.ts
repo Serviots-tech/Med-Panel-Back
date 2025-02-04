@@ -6,7 +6,5 @@ const router = express.Router();
 
 // Route to create medicines
 router.post('/login', loginValidationRules,loginController);
-
-
-
+ 
 export default router;

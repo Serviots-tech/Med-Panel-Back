@@ -30,7 +30,7 @@ enum ScheduleType {
 }
 
 enum UnitType {
-  Gm
+  gm
   ml
   kit
   kg
@@ -38,7 +38,7 @@ enum UnitType {
   Tablet
   Capsule
   ltr
-  mdi
+  MDI
 }
 
 enum PrescriptionReq {

@@ -117,7 +117,7 @@ export const updateMedicineController = async (req: Request, res: Response, next
     }
 
     // Proceed with updating the medicine
-    const updatedMedicine = await updateMedicineByIdService(id, {...updateData,price: parseFloat(req?.body?.price) , Percentage: parseInt(updateData?.gstPercentage),image:req?.files?.length ? originalNames : updateData?.image?.split(","),isDeleted:convertToBoolean(updateData?.isDeleted)});
+    const updatedMedicine = await updateMedicineByIdService(id, {...updateData,price: parseFloat(req?.body?.price) , gstPercentage: parseInt(updateData?.gstPercentage),image:req?.files?.length ? originalNames : updateData?.image?.split(","),isDeleted:convertToBoolean(updateData?.isDeleted)});
     log(`Medicine updated successfully with ID: ${id}`);
     DefaultResponse(res, 200, 'Medicine updated successfully', updatedMedicine);
   } catch (error) {
