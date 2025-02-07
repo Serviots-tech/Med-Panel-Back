@@ -25,10 +25,14 @@ export const fetchAllMedicines = async (
   const whereCondition: any = { isDeleted: false };
 
   if (searchValue) {
+    if(targetField==="price"){
+      whereCondition[targetField] = parseInt(searchValue)
+    }else{
     whereCondition[targetField] = {
       contains: searchValue,
       mode: "insensitive",
     };
+  }
   }
 
   if(userId){
