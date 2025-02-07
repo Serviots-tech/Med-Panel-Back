@@ -58,7 +58,6 @@ export const fetchAllMedicines = async (
     take: limit,
   });
 
-
   const total = await prisma.medicine.count({
     where: whereCondition,
   });
