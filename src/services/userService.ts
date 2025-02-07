@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client';
-import { createUser, findUserByEmail } from '../Repositories/userRepository';
+import { createUser, findUserByEmail, getUser } from '../Repositories/userRepository';
 import { CustomError } from '../utils/customError';
 import { hashPassword } from '../helpers/passwordHelper';
 
@@ -36,5 +36,13 @@ export const createAdminUserService = async (data: { email: string, password: st
 
 
     return { data:user,message:"User created successfully" }
+
+};
+
+export const getAllUserService = async () => {
+
+    const user = await getUser()
+
+    return user
 
 };

@@ -10,9 +10,7 @@ import { convertToBoolean } from '../utils/utils';
 import { RequestExtended } from '../interfaces/global';
 
 
-// Controller function to add a new medicine 
 export const createMedicineController = async (req: RequestExtended, res: Response, next: NextFunction) => {
-  // if (req.user?.role !== "ADMIN") 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
@@ -47,9 +45,11 @@ export const getAllMedicinesController = async (req: Request, res: Response, nex
     const limit = parseInt(req.query.limit as string, 10) || 10;
     const targetField= req.query.targetField as string || 'medicineName';
     const searchValue= req?.query?.search ? (req?.query?.search as string).trim() : null
+    const userId= req?.query?.userId ? (req?.query?.userId as string).trim() : null
+    const selectedDate= req?.query?.selectedDate ?? null
 
-    // Fetch medicines with pagination
-    const medicines = await getAllMedicinesService(page, limit,targetField,searchValue);
+    
+    const medicines = await getAllMedicinesService(page, limit,targetField,searchValue,userId,selectedDate);
 
     if (!medicines || medicines.data.length === 0) {
       DefaultResponse(res, 200, 'No medicines found', null);

@@ -11,40 +11,13 @@ export const addMedicine = async (medicineData: Medicine) => {
   return await createMedicine(medicineData);
 };
 
-// Fetch all medicine data
-// export const fetchAllMedicines = async (page: number, limit: number,targetField:string, searchValue:string | null) => {
-
-//   const skip = (page - 1) * limit;
-
-//   const data = await prisma.medicine.findMany({
-//     where: { isDeleted: false,
-//       [targetField]:{
-//         contains:searchValue,
-//         mode:'insensitive'
-//       }
-//     },
-//     skip,
-//     take: limit,
-//   });
-  
-//   // Get the total number of records
-//   const total = await prisma.medicine.count({
-//     where: { isDeleted: false },
-//   });
-
-//   // Return the paginated data and total count
-//   return {
-//     data,
-//     total,
-//   };
-
-// };
-
 export const fetchAllMedicines = async (
   page: number,
   limit: number,
   targetField: string,
-  searchValue: string | null
+  searchValue: string | null,
+  userId:string | null,
+  selectedDate: string | null
 ) => {
   const skip = (page - 1) * limit;
 
@@ -55,6 +28,22 @@ export const fetchAllMedicines = async (
     whereCondition[targetField] = {
       contains: searchValue,
       mode: "insensitive",
+    };
+  }
+
+  if(userId){
+    whereCondition["createdBy"]=userId
+  }
+  if (selectedDate) {
+    const startOfDay = new Date(selectedDate);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(selectedDate);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
+    whereCondition.createdAt = {
+      gte: startOfDay,
+      lte: endOfDay,
     };
   }
 
