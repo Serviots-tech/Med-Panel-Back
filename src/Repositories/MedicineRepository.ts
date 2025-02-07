@@ -25,10 +25,14 @@ export const fetchAllMedicines = async (
   const whereCondition: any = { isDeleted: false };
 
   if (searchValue) {
+    if(targetField==="price"){
+      whereCondition[targetField] = parseInt(searchValue)
+    }else{
     whereCondition[targetField] = {
       contains: searchValue,
       mode: "insensitive",
     };
+  }
   }
 
   if(userId){
@@ -54,7 +58,6 @@ export const fetchAllMedicines = async (
     take: limit,
   });
 
-  // Get the total count based on the applied filter
   const total = await prisma.medicine.count({
     where: whereCondition,
   });
