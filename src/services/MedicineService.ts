@@ -4,7 +4,6 @@ import { CustomError } from '../utils/customError';
 import { log } from '../utils/logger';
 
 export const createMedicineService = async (medicineData: Medicine, fileLocation?: any) => {
-    try {
         log(`Attempting to create a new medicine: ${medicineData.medicineName}`);
         // const fileName = fileLocation?.split('/').pop()!.slice(1);
 
@@ -14,15 +13,11 @@ export const createMedicineService = async (medicineData: Medicine, fileLocation
         const newMedicine = await addMedicine(updatedMedicineData);
         log(`Medicine created successfully: ${newMedicine.medicineName}`);
         return newMedicine;
-    } catch (error) {
-        log(`Error creating medicine: ${error}`);
-        throw new CustomError('Failed to create medicine', 500);
-    }
 };
 
-export const getAllMedicinesService = async (page: number, pageSize: number) => {
+export const getAllMedicinesService = async (page: number, pageSize: number,targetField:string, searchValue:string | null,userId:string | null , selectedDate: any) => {
     try {
-        const { data, total } = await fetchAllMedicines(page, pageSize);
+        const { data, total } = await fetchAllMedicines(page, pageSize,targetField,searchValue,userId,selectedDate);
         return {
             data,
             total,

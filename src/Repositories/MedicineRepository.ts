@@ -11,29 +11,60 @@ export const addMedicine = async (medicineData: Medicine) => {
   return await createMedicine(medicineData);
 };
 
-// Fetch all medicine data
-export const fetchAllMedicines = async (page: number, limit: number) => {
-
+export const fetchAllMedicines = async (
+  page: number,
+  limit: number,
+  targetField: string,
+  searchValue: string | null,
+  userId:string | null,
+  selectedDate: string | null
+) => {
   const skip = (page - 1) * limit;
 
+  // Build dynamic filter
+  const whereCondition: any = { isDeleted: false };
+
+  if (searchValue) {
+    whereCondition[targetField] = {
+      contains: searchValue,
+      mode: "insensitive",
+    };
+  }
+
+  if(userId){
+    whereCondition["createdBy"]=userId
+  }
+  if (selectedDate) {
+    const startOfDay = new Date(selectedDate);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(selectedDate);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
+    whereCondition.createdAt = {
+      gte: startOfDay,
+      lte: endOfDay,
+    };
+  }
+
+  // Fetch medicines
   const data = await prisma.medicine.findMany({
-    where: { isDeleted: false },
+    where: whereCondition,
     skip,
     take: limit,
   });
-  
-  // Get the total number of records
+
+  // Get the total count based on the applied filter
   const total = await prisma.medicine.count({
-    where: { isDeleted: false },
+    where: whereCondition,
   });
 
-  // Return the paginated data and total count
   return {
     data,
     total,
   };
-
 };
+
 
 // Fetch a medicine by ID
 export const fetchMedicineById = async (id: string) => {

@@ -52,15 +52,16 @@ enum Role {
 }
 
 model User {
-  id        String   @id @unique @default(uuid())
+  id        String     @id @unique @default(uuid())
   name      String
-  email     String   @unique
+  email     String     @unique
   password  String
   role      Role
-  isDeleted Boolean  @default(false)
+  isDeleted Boolean    @default(false)
   token     String?
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
+  updatedAt DateTime   @updatedAt
+  createdAt DateTime   @default(now())
+  Medicine  Medicine[]
 }
 
 model DoseForms {
@@ -94,9 +95,10 @@ model Medicine {
   expiryDate            DateTime?
   scheduleType          ScheduleType
   gstPercentage         Int
+  saltComposition       String
   isDeleted             Boolean         @default(false)
   createdAt             DateTime        @default(now())
   updatedAt             DateTime        @updatedAt
-  createdBy             String?
-  // creator     User     @relation(fields: [createdBy], references: [id])
+  createdBy             String
+  creator               User            @relation(fields: [createdBy], references: [id])
 }

@@ -44,6 +44,22 @@ export const updateDoseForm = async (data: { id: string, name: string,createdBy:
 
 };
 
+export const updateDoseFormByName = async (data: {  name: string,createdBy:string }) => {
+
+  const doseForm = await prisma.doseForms.updateMany({
+    where: {
+      name:data?.name
+    },
+    data: {
+      createdBy:data?.createdBy,
+      isDeleted:false
+    }
+  })
+
+  return doseForm
+
+};
+
 export const getAllDoseForm = async (page: number, limit: number) => {
 
   const skip = (page - 1) * limit;

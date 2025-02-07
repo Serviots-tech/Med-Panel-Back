@@ -1,5 +1,5 @@
 import express from 'express';
-import { createAdminUserController, createUserController } from '../controllers/userController';
+import { createAdminUserController, createUserController, getAllUserController } from '../controllers/userController';
 import { isAuthenticated } from '../middlewares/authMiddleware';
 import {  createAdminUserValidator, createUserValidator } from '../middlewares/validators/medicineValidator';
 
@@ -10,6 +10,7 @@ router.post('/create-user',isAuthenticated,createUserValidator, createUserContro
 
 router.post('/create-admin',createAdminUserValidator, createAdminUserController);
 
+router.get('/get-all',isAuthenticated, getAllUserController);
 
 
 

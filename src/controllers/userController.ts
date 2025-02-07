@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { DefaultResponse } from '../utils/DefaultResponse';
-import { createAdminUserService, createUserService } from '../services/userService';
+import { createAdminUserService, createUserService, getAllUserService } from '../services/userService';
 import { RequestExtended } from '../interfaces/global';
 import { CustomError } from '../utils/customError';
 
@@ -42,6 +42,23 @@ export const createAdminUserController = async (req: RequestExtended, res: Respo
     const user = await createAdminUserService({ email: _email, password: password, name });
 
     DefaultResponse(res, 200, 'Admin user created successfully', user);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const getAllUserController = async (req: RequestExtended, res: Response, next: NextFunction): Promise<void> => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    DefaultResponse(res, 400, 'Validation failed', errors.array())
+  }
+  try {
+
+    const user = await getAllUserService();
+
+  const data=user?.map(({ password,token,updatedAt,createdAt,isDeleted, ...rest }) => rest);
+
+    DefaultResponse(res, 200, 'Get all user successfully', data);
   } catch (error) {
     next(error);
   }

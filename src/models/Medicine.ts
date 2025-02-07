@@ -4,7 +4,17 @@ import { CustomError } from '../utils/customError';
 const prisma = new PrismaClient();
 
 export const createMedicine = async (medicineData: Medicine) => {
-    console.log("🚀 ~ createMedicine ~ medicineData:", medicineData)
+
+    if (medicineData?.barcodeSKU) {
+        const data = await prisma.medicine.findMany({
+            where: {
+                barcodeSKU: medicineData.barcodeSKU
+            }
+        })
+        if (data) {
+            throw new CustomError('BarcodeSKU already exists', 403);
+        }
+    }
     return await prisma.medicine.create({
         data: medicineData,
     });
@@ -37,7 +47,7 @@ export const getMedicineById = async (id: string) => {
 
     // Query the database
     const data = await prisma.medicine.findUnique({
-        where: { id: id,isDeleted:false },
+        where: { id: id, isDeleted: false },
     });
 
     // If no medicine found or if it's marked as deleted
@@ -51,16 +61,35 @@ export const getMedicineById = async (id: string) => {
 // Update a medicine by ID
 export const updateMedicine = async (id: string, updateData: Medicine) => {
 
-    const {expiryDate,...restData} =  updateData
+    const medicineExits= await prisma.medicine.findUnique({
+        where:{
+            id:id
+        }
+    })
+    if(!medicineExits){
+        throw new CustomError('Medicine not found',404);
+    }
+
+    const { expiryDate, ...restData } = updateData
+
+    if (updateData?.barcodeSKU) {
+
+        const data = await prisma.medicine.findMany({
+            where: {
+                barcodeSKU: updateData?.barcodeSKU
+            }
+        })
+
+        if(data && data.some(obj => obj.id !== id)){
+            throw new CustomError('BarcodeSKU already exists', 403);
+        }
+    }
 
     const medicine = await prisma.medicine.update({
         where: { id },
         data: restData,
     });
 
-    if (!medicine) {
-        throw new Error('Medicine not found');
-    }
     return medicine;
 
 };
@@ -68,7 +97,7 @@ export const updateMedicine = async (id: string, updateData: Medicine) => {
 // Delete a medicine by ID
 export const deleteMedicine = async (id: string) => {
 
- 
+
     const existingMedicine = await prisma.medicine.findUnique({
         where: { id },
     });
