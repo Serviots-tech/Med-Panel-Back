@@ -7,10 +7,12 @@ import { CustomError } from '../utils/customError';
 import { DefaultResponse } from '../utils/DefaultResponse';
 import { log } from '../utils/logger';
 import { convertToBoolean } from '../utils/utils';
+import { RequestExtended } from '../interfaces/global';
 
 
 // Controller function to add a new medicine 
-export const createMedicineController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const createMedicineController = async (req: RequestExtended, res: Response, next: NextFunction) => {
+  // if (req.user?.role !== "ADMIN") 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
@@ -27,7 +29,7 @@ export const createMedicineController = async (req: Request, res: Response, next
 
   try {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
-    const medicine = await createMedicineService({ ...req.body, price: parseFloat(req?.body?.price),gstPercentage: parseInt(req?.body?.gstPercentage) }, (originalNames as any));
+    const medicine = await createMedicineService({ ...req.body,createdBy:req.user?.id, price: parseFloat(req?.body?.price),gstPercentage: parseInt(req?.body?.gstPercentage) }, (originalNames as any));
     log(`Medicine created successfully: ${medicine.medicineName}`);
     DefaultResponse(res, 200, 'Medicines fetched successfully', medicine);
   } catch (error) {
@@ -43,9 +45,11 @@ export const getAllMedicinesController = async (req: Request, res: Response, nex
     // Get query parameters (page and limit)
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = parseInt(req.query.limit as string, 10) || 10;
+    const targetField= req.query.targetField as string || 'medicineName';
+    const searchValue= req?.query?.search ? (req?.query?.search as string).trim() : null
 
     // Fetch medicines with pagination
-    const medicines = await getAllMedicinesService(page, limit);
+    const medicines = await getAllMedicinesService(page, limit,targetField,searchValue);
 
     if (!medicines || medicines.data.length === 0) {
       DefaultResponse(res, 200, 'No medicines found', null);

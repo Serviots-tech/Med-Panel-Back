@@ -20,9 +20,9 @@ export const createMedicineService = async (medicineData: Medicine, fileLocation
     }
 };
 
-export const getAllMedicinesService = async (page: number, pageSize: number) => {
+export const getAllMedicinesService = async (page: number, pageSize: number,targetField:string, searchValue:string | null) => {
     try {
-        const { data, total } = await fetchAllMedicines(page, pageSize);
+        const { data, total } = await fetchAllMedicines(page, pageSize,targetField,searchValue);
         return {
             data,
             total,

@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.use('/api/auth', authRoutes);
 
-router.use('/api/medicines', medicineRoutes);
+router.use('/api/medicines',isAuthenticated, medicineRoutes);
 
 router.use('/api/user',userRoutes)
 router.use('/api/dose-form',isAuthenticated, doseFormRoutes)

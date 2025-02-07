@@ -2,18 +2,25 @@ import { Role } from '@prisma/client';
 import { createUser, findUserByEmail } from '../Repositories/userRepository';
 import { CustomError } from '../utils/customError';
 import { hashPassword } from '../helpers/passwordHelper';
-import { createDoseForm, deleteDoseForm, getAllDoseForm, updateDoseForm, validateDoseFormById, validateDoseFormByName } from '../Repositories/doseFormRepository';
+import { createDoseForm, deleteDoseForm, getAllDoseForm, updateDoseForm, updateDoseFormByName, validateDoseFormById, validateDoseFormByName } from '../Repositories/doseFormRepository';
 
 export const createDoseFormService = async (data: { name:string,createdBy:string}) => {
 
     // check email already exits
     const isDoseFormExist= await validateDoseFormByName(data?.name)
 
-    if(isDoseFormExist){
+    if(isDoseFormExist && !isDoseFormExist?.isDeleted){
         throw new CustomError("Dose with same nam already exits",400)
     }
+    let doseForm;
 
-    const doseForm = await createDoseForm(data)
+    if(isDoseFormExist?.isDeleted){
+         doseForm= await updateDoseFormByName(data)
+
+    }else{
+        const doseForm = await createDoseForm(data)
+
+    }
 
 
     return { data:doseForm,message:"Dose form created successfully" }
