@@ -11,7 +11,7 @@ export const createMedicine = async (medicineData: Medicine) => {
                 barcodeSKU: medicineData.barcodeSKU
             }
         })
-        if (data) {
+        if (data.length) {
             throw new CustomError('BarcodeSKU already exists', 403);
         }
     }
