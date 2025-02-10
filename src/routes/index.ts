@@ -15,6 +15,11 @@ router.use('/api/medicines',isAuthenticated, medicineRoutes);
 router.use('/api/user',userRoutes)
 router.use('/api/dose-form',isAuthenticated, doseFormRoutes)
 
+router.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', message: 'Service is running' });
+});
+
+
 router.use(errorHandler)
 
 

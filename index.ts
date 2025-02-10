@@ -11,6 +11,7 @@ config()
 const app = express();
 const port = process.env.PORT || 8080;
 
+app.use(express.json({ limit: '100mb' }));
 // CORS Configuration
 // const corsOptions = {
 //   origin: 'http://localhost:5173',
