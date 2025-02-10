@@ -45,6 +45,7 @@ enum PrescriptionReq {
   YES
   NO
 }
+
 enum SubCategory {
   MOTHER_CARE
   PROTEIN_POWDERS_DRINKS
@@ -96,16 +97,16 @@ model Medicine {
   medicineName          String
   brandName             String
   productType           String
-  doseFormId            String
-  doseForm              DoseForms       @relation(fields: [doseFormId], references: [id]) 
+  doseFormId            String?
+  doseForm              DoseForms?      @relation(fields: [doseFormId], references: [id])
   weightage             String
   manufacturer          String
   packSize              PackSize
   unitType              UnitType
   marketedBy            String
   hsnCode               String?
-  saltStrength        String?
-  flavors               String
+  saltStrength          String?
+  flavors               String?
   offers                String?
   subCategory           SubCategory?
   price                 Float
