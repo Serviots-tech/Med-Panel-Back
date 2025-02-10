@@ -27,7 +27,7 @@ export const createMedicineController = async (req: RequestExtended, res: Respon
 
   try {
     log(`Received request to create medicine with data: ${JSON.stringify(req.body)}`);
-    const medicine = await createMedicineService({ ...req.body, subCategory:  req.body?.subCategory!=="" ? req.body?.subCategory: null ,createdBy:req.user?.id, price: parseFloat(req?.body?.price),gstPercentage: parseInt(req?.body?.gstPercentage) }, (originalNames as any));
+    const medicine = await createMedicineService({ ...req.body, doseFormId:  req.body?.doseFormId!=="" ? req.body?.doseFormId: null, subCategory:  req.body?.subCategory!=="" ? req.body?.subCategory: null ,createdBy:req.user?.id, price: parseFloat(req?.body?.price),gstPercentage: parseInt(req?.body?.gstPercentage) }, (originalNames as any));
     log(`Medicine created successfully: ${medicine.medicineName}`);
     DefaultResponse(res, 200, 'Medicines fetched successfully', medicine);
   } catch (error) {
@@ -121,7 +121,7 @@ export const updateMedicineController = async (req: Request, res: Response, next
     }
 
     // Proceed with updating the medicine
-    const updatedMedicine = await updateMedicineByIdService(id, {...updateData, subCategory:  req.body?.subCategory!=="" ? req.body?.subCategory: null,price: parseFloat(req?.body?.price) , gstPercentage: parseInt(updateData?.gstPercentage),image:req?.files?.length ? originalNames : updateData?.image?.split(","),isDeleted:convertToBoolean(updateData?.isDeleted)});
+    const updatedMedicine = await updateMedicineByIdService(id, {...updateData, doseFormId:  req.body?.doseFormId!=="" ? req.body?.doseFormId: null, subCategory:  req.body?.subCategory!=="" ? req.body?.subCategory: null,price: parseFloat(req?.body?.price) , gstPercentage: parseInt(updateData?.gstPercentage),image:req?.files?.length ? originalNames : updateData?.image?.split(","),isDeleted:convertToBoolean(updateData?.isDeleted)});
     log(`Medicine updated successfully with ID: ${id}`);
     DefaultResponse(res, 200, 'Medicine updated successfully', updatedMedicine);
   } catch (error) {
