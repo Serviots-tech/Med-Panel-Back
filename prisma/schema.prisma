@@ -45,6 +45,23 @@ enum PrescriptionReq {
   YES
   NO
 }
+enum SubCategory {
+  MOTHER_CARE
+  PROTEIN_POWDERS_DRINKS
+  VITAMINS_SUPPLEMENTS
+  SEXUAL_HEALTH_SUPPLEMENTS
+  FEMININE_HYGIENE
+  GROOMING
+  HAIR_CARE
+  ORAL_CARE
+  FRAGRANCES
+  PET_PRODUCT
+  CLEANING_ESSENTIALS
+  FOOD_DRINK
+  DIAPERS_WIPES
+  BABY_PRODUCT
+  SKIN_CARE
+}
 
 enum Role {
   ADMIN
@@ -80,11 +97,17 @@ model Medicine {
   brandName             String
   productType           String
   doseFormId            String
-  doseForm              DoseForms       @relation(fields: [doseFormId], references: [id]) //product category
+  doseForm              DoseForms       @relation(fields: [doseFormId], references: [id]) 
   weightage             String
   manufacturer          String
   packSize              PackSize
   unitType              UnitType
+  marketedBy            String
+  hsnCode               String?
+  saltStrength        String?
+  flavors               String
+  offers                String?
+  subCategory           SubCategory
   price                 Float
   routeOfAdministration String?
   sideEffects           String?
