@@ -107,7 +107,7 @@ model Medicine {
   saltStrength        String?
   flavors               String
   offers                String?
-  subCategory           SubCategory
+  subCategory           SubCategory?
   price                 Float
   routeOfAdministration String?
   sideEffects           String?
