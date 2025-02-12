@@ -45,12 +45,10 @@ export const fetchAllMedicines = async (
     const endOfDay = new Date(selectedDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const startOfDayUTC = new Date(startOfDay.toISOString());
-    const endOfDayUTC = new Date(endOfDay.toISOString());
 
     whereCondition.createdAt = {
-      gte: startOfDayUTC,
-      lte: endOfDayUTC,
+      gte: new Date(startOfDay),
+      lte: new Date(endOfDay),
     };
   }
 
